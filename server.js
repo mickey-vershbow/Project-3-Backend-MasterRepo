@@ -41,12 +41,8 @@ app.use(express.urlencoded({ extended: false })); //parse bodies from form submi
 // ROUTES
 //////////////////////
 
-//Home router
-app.use("/", (req, res) => {
-    res.send("hello world");
-});
 
-app.use("/index", IndexRouter);
+app.use("/", IndexRouter);
 
 //////////////////////
 // LISTENER

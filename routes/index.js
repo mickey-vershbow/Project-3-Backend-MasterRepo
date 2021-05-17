@@ -69,8 +69,13 @@ router.get("/vinyl/seed", (req, res) => {
   });
 });
 
-// Index Page - All Vinyl
+// test route
 router.get("/", (req, res) => {
+  res.send("hello world");
+});
+
+// Index Page - All Vinyl
+router.get("/vinyl", (req, res) => {
   Vinyl.find({}, (error, allVinyl) => {
     res.json(allVinyl);
   });
@@ -80,7 +85,7 @@ router.get("/", (req, res) => {
 router.post("/vinyl", (req, res) => {
   Vinyl.create(req.body, (error, createdVinyl) => {
     console.log(createdVinyl);
-    res.redirect("/vinyl");
+    res.redirect("/");
   });
 });
 

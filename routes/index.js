@@ -16,6 +16,7 @@ const Vinyl = require("../Models/Vinyl");
 //////////////////////
 // SEED DATA
 ///////////////////////
+// seed MongoDB
 const vinylArr = [
   {
     name: "PJ Harvey",
@@ -55,19 +56,15 @@ const vinylArr = [
 // ROUTES
 ////////////////////////////////
 
+// Home Page
 router.get("/", (req, res) => {
   //res.json lets us send a response as JSON data
   res.json({
-    response: "Hello World",
+    response: "Home Page",
   });
 });
 
-router.get("/vinyl", (req, res) => {
-  Vinyl.find({}, (error, allVinyl) => {
-    res.json(allVinyl);
-  });
-});
-
+//! Seed MongoDB Route
 router.get("/vinyl/seed", (req, res) => {
   Vinyl.collection.drop();
   Vinyl.create(vinylArr, (error, record) => {
@@ -80,4 +77,42 @@ router.get("/vinyl/seed", (req, res) => {
   });
 });
 
+// Index Page - All Vinyl
+router.get("/vinyl", (req, res) => {
+  Vinyl.find({}, (error, allVinyl) => {
+    res.json(allVinyl);
+  });
+});
+
+// Create New Vinyl
+router.post("/vinyl/", (req, res) => {
+  Vinyl.create(req.body, (error, createdVinyl) => {
+    console.log(createdVinyl);
+    res.redirect("/vinyl");
+  });
+});
+
+// Delete Vinyl
+router.delete("/vinyl/:id", (req, res) => {
+  let deletedVinyl = req.params.id;
+  Vinyl.findByIdAndRemove(req.params.id, (error, data) => {
+    console.log("The following Vinyl was deleted: ", deletedVinyl);
+    res.redirect("/vinyl");
+  });
+});
+
+// Update Vinyl
+router.put("/vinyl/:id", (req, res) => {
+  Vinyl.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, updatedModel) => {
+      console.log(updatedModel);
+      res.redirect("/vinyl");
+    }
+  );
+});
+
+// Export Router \\
 module.exports = router;

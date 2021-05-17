@@ -17,7 +17,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || "2021";
 // const SECRET = process.env.SECRET || "secret";
 // IMPORT ROUTER
-const IndexRouter = require('./routes/index');
+const IndexRouter = require("./routes/index");
 
 //////////////////////
 // APP OBJECT
@@ -41,12 +41,7 @@ app.use(express.urlencoded({ extended: false })); //parse bodies from form submi
 // ROUTES
 //////////////////////
 
-app.use("/", (req, res) => {
-  res.send("home page")
-})
-
-app.use("/vinyl", IndexRouter);
-
+app.use("/", IndexRouter);
 
 //////////////////////
 // LISTENER

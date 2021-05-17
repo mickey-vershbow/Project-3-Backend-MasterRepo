@@ -56,14 +56,6 @@ const vinylArr = [
 // ROUTES
 ////////////////////////////////
 
-// Home Page
-// router.get("/", (req, res) => {
-//   //res.json lets us send a response as JSON data
-//   res.json({
-//     response: "Home Page",
-//   });
-// });
-
 //! Seed MongoDB Route
 router.get("/vinyl/seed", (req, res) => {
   Vinyl.collection.drop();
@@ -78,14 +70,14 @@ router.get("/vinyl/seed", (req, res) => {
 });
 
 // Index Page - All Vinyl
-router.get("/vinyl", (req, res) => {
+router.get("/", (req, res) => {
   Vinyl.find({}, (error, allVinyl) => {
     res.json(allVinyl);
   });
 });
 
 // Create New Vinyl
-router.post("/vinyl/", (req, res) => {
+router.post("/vinyl", (req, res) => {
   Vinyl.create(req.body, (error, createdVinyl) => {
     console.log(createdVinyl);
     res.redirect("/vinyl");

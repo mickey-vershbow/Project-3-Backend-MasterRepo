@@ -42,7 +42,11 @@ app.use(express.urlencoded({ extended: false })); //parse bodies from form submi
 //////////////////////
 
 
-app.use("/", IndexRouter);
+app.use("/vinyl", IndexRouter);
+
+app.use("/", (req, res) => {
+  res.send("home page")
+})
 
 //////////////////////
 // LISTENER

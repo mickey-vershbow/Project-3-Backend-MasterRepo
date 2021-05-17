@@ -57,12 +57,12 @@ const vinylArr = [
 ////////////////////////////////
 
 // Home Page
-router.get("/", (req, res) => {
-  //res.json lets us send a response as JSON data
-  res.json({
-    response: "Home Page",
-  });
-});
+// router.get("/", (req, res) => {
+//   //res.json lets us send a response as JSON data
+//   res.json({
+//     response: "Home Page",
+//   });
+// });
 
 //! Seed MongoDB Route
 router.get("/vinyl/seed", (req, res) => {

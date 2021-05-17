@@ -41,12 +41,12 @@ app.use(express.urlencoded({ extended: false })); //parse bodies from form submi
 // ROUTES
 //////////////////////
 
-
-app.use("/vinyl", IndexRouter);
-
 app.use("/", (req, res) => {
   res.send("home page")
 })
+
+app.use("/vinyl", IndexRouter);
+
 
 //////////////////////
 // LISTENER

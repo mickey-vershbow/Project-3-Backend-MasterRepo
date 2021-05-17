@@ -11,7 +11,7 @@ const cors = require("cors");
 // GET PORT FROM ENV OR DEFAULT PORT
 const PORT = process.env.PORT || "2021";
 // const SECRET = process.env.SECRET || "secret";
-const Vinyl = require("../Models/Vinyl");
+const Vinyl = require("../models/Vinyl");
 
 //////////////////////
 // SEED DATA

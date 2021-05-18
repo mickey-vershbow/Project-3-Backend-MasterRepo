@@ -104,14 +104,12 @@ router.delete("/vinyl/:id", (req, res) => {
 
 // Update Vinyl
 router.put("/vinyl/:id", async (req, res) => {
-  try {
-    // send all vinyl
-    res.json(await Vinyl.findByIdAndRemove(req.params.id));
-  } catch (error) {
-    //send error
-    res.status(400).json(error);
-  }
-});
+    try {
+        res.json(await Vinyl.findByIdAndUpdate(req.params.id, req.body, {new: true}))
+    } catch (error){
+        res.status(400).json(error)
+    }
+})
 
 // Export Router \\
 module.exports = router;

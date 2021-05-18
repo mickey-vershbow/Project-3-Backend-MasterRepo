@@ -82,12 +82,16 @@ router.get("/vinyl", (req, res) => {
 });
 
 // Create New Vinyl
-router.post("/vinyl", (req, res) => {
-  Vinyl.create(req.body, (error, createdVinyl) => {
-    console.log(createdVinyl);
-    res.redirect("/");
-  });
+router.post("/vinyl", async (req, res) => {
+  try {
+    // send all vinyl
+    res.json(await Vinyl.create(req.body));
+  } catch (error) {
+    //send error
+    res.status(400).json(error);
+  }
 });
+
 
 // Delete Vinyl
 router.delete("/vinyl/:id", (req, res) => {
@@ -99,16 +103,14 @@ router.delete("/vinyl/:id", (req, res) => {
 });
 
 // Update Vinyl
-router.put("/vinyl/:id", (req, res) => {
-  Vinyl.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true },
-    (err, updatedModel) => {
-      console.log(updatedModel);
-      res.redirect("/vinyl");
-    }
-  );
+router.put("/vinyl/:id", async (req, res) => {
+  try {
+    // send all vinyl
+    res.json(await Vinyl.findByIdAndRemove(req.params.id));
+  } catch (error) {
+    //send error
+    res.status(400).json(error);
+  }
 });
 
 // Export Router \\

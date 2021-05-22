@@ -88,7 +88,7 @@ router.get("/index", async (req, res) => {
     "https://musicbrainz.org/ws/2/release/f86c0b17-f117-45e0-94b2-5dd4664e271e?inc=artist-credits+labels+discids+recordings&fmt=json"
   );
   const albums = response.data;
-  // console.log(response.data.status.media[0].tracks);
+  console.log(response.data.media[0].tracks);
   res.json(albums);
 });
 

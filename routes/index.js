@@ -85,10 +85,12 @@ router.get("/vinyl", (req, res) => {
 // MusicBrainz Index Page
 router.get("/index", async (req, res) => {
   const response = await axios(
-    "https://musicbrainz.org/ws/2/release/f86c0b17-f117-45e0-94b2-5dd4664e271e?inc=artist-credits+labels+discids+recordings&fmt=json")
+    "https://musicbrainz.org/ws/2/release/f86c0b17-f117-45e0-94b2-5dd4664e271e?inc=artist-credits+labels+discids+recordings&fmt=json"
+  );
   const albums = response.data;
+  // console.log(response.data.status.media[0].tracks);
   res.json(albums);
-})
+});
 
 // Create New Vinyl
 router.post("/vinyl", async (req, res) => {
@@ -101,7 +103,6 @@ router.post("/vinyl", async (req, res) => {
   }
 });
 
-
 // Delete Vinyl
 router.delete("/vinyl/:id", (req, res) => {
   let deletedVinyl = req.params.id;
@@ -113,12 +114,14 @@ router.delete("/vinyl/:id", (req, res) => {
 
 // Update Vinyl
 router.put("/vinyl/:id", async (req, res) => {
-    try {
-        res.json(await Vinyl.findByIdAndUpdate(req.params.id, req.body, {new: true}))
-    } catch (error){
-        res.status(400).json(error)
-    }
-})
+  try {
+    res.json(
+      await Vinyl.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    );
+  } catch (error) {
+    res.status(400).json(error);
+  }
+});
 
 // Export Router \\
 module.exports = router;

@@ -121,7 +121,7 @@ router.put("/vinyl/:id", async (req, res) => {
 ////////////////////////////////
 // User Auth Routes
 ///////////////////////////////
-router.post("/signup", auth, async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const newUser = await User.create(req.body);
@@ -131,7 +131,7 @@ router.post("/signup", auth, async (req, res) => {
   }
 });
 
-router.post("/login", auth, async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });

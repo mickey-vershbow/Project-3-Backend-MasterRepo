@@ -6,7 +6,7 @@ const auth = async (req, res, next) => {
         //Authorization: "bearer insertTokenHere"
         if (req.headers.authorization) {
             console.log("hello");
-            const token = req.headers.authorization.split(" "[1]);
+            const token = req.headers.authorization.split(" ")[1];
             console.log(token);
             const payload = await jwt.verify(token, SECRET);
             console.log(payload);

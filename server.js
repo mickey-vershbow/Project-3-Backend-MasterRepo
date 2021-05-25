@@ -15,7 +15,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 // GET PORT FROM ENV OR DEFAULT PORT
 const PORT = process.env.PORT || "2021";
-const auth = require('./auth/index');
 // IMPORT ROUTER
 const IndexRouter = require("./routes/index");
 

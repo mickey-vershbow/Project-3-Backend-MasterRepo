@@ -120,17 +120,27 @@ router.post("/login", async (req, res) => {
 ///////////////////
 
 // Mongo Index Page - All Vinyl
-router.get("/vinyl", auth, (req, res) => {
-  Vinyl.find({}, (error, allVinyl) => {
-    res.json(allVinyl);
-  });
+router.get("/vinyl", auth, async (req, res) => {
+  try {
+    // grab username
+    const { username } = req.payload;
+    // find albums associated with username
+    res.status(200).json(await Vinyl.find({ username }));
+  } catch (error) {
+    //send error
+    res.status(400).json(error);
+  }
 });
 
 // Create New Vinyl
 router.post("/vinyl", auth, async (req, res) => {
   try {
-    // send all vinyl
-    res.json(await Vinyl.create(req.body));
+    // grab username
+    const { username } = req.payload;
+    // store username in variable
+    req.body.username = username;
+    // create new album in user collection with req.body
+    res.status(200).json(await Vinyl.create(req.body));
   } catch (error) {
     //send error
     res.status(400).json(error);
@@ -138,21 +148,34 @@ router.post("/vinyl", auth, async (req, res) => {
 });
 
 // Delete Vinyl
-router.delete("/vinyl/:id", auth, (req, res) => {
-  let deletedVinyl = req.params.id;
-  Vinyl.findByIdAndRemove(req.params.id, (error, data) => {
-    console.log("The following Vinyl was deleted: ", deletedVinyl);
-    res.redirect("/vinyl");
-  });
+router.delete("/vinyl/:id", auth, async (req, res) => {
+  try {
+    // grab username
+    const { username } = req.payload;
+    // store username in variable
+    req.body.username = username;
+    const { id } = req.params;
+    // create new album in user collection with req.body
+    res.status(200).json(await Vinyl.findByIdAndDelete(id));
+    console.log("The following was deleted ", id);
+  } catch (error) {
+    //send error
+    res.status(400).json(error);
+  }
 });
 
 // Update Vinyl
 router.put("/vinyl/:id", auth, async (req, res) => {
   try {
-    res.json(
-      await Vinyl.findByIdAndUpdate(req.params.id, req.body, { new: true })
-    );
+    // grab username
+    const { username } = req.payload;
+    // store username in variable
+    req.body.username = username;
+    const { id } = req.params;
+    // create new album in user collection with req.body
+    res.status(200).json(await Vinyl.findByIdAndUpdate(id, req.body));
   } catch (error) {
+    //send error
     res.status(400).json(error);
   }
 });

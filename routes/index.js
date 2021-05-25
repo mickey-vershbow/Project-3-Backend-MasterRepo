@@ -173,7 +173,7 @@ router.put("/vinyl/:id", auth, async (req, res) => {
     req.body.username = username;
     const { id } = req.params;
     // create new album in user collection with req.body
-    res.status(200).json(await Vinyl.findByIdAndUpdate(id, req.body));
+    res.status(200).json(await Vinyl.findByIdAndUpdate(id, req.body, {new:true}));
   } catch (error) {
     //send error
     res.status(400).json(error);

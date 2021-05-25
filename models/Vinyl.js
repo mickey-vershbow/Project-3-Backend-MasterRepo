@@ -10,7 +10,7 @@ const { Schema, model } = require("mongoose");
 
 const VinylSchema = new Schema(
   {
-    username: { type: String, required: true, unique: true },
+    username: { type: String, required: true },
     name: String,
     title: String,
     image: String,

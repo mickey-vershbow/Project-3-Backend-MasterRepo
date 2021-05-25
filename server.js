@@ -15,7 +15,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 // GET PORT FROM ENV OR DEFAULT PORT
 const PORT = process.env.PORT || "2021";
-// const SECRET = process.env.SECRET || "secret";
+const auth = require('./auth/index');
 // IMPORT ROUTER
 const IndexRouter = require("./routes/index");
 
@@ -40,6 +40,7 @@ app.use(express.urlencoded({ extended: false })); //parse bodies from form submi
 //////////////////////
 // ROUTES
 //////////////////////
+
 
 app.use("/", IndexRouter);
 

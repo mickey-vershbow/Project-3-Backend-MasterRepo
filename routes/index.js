@@ -14,6 +14,7 @@ const jwt = require("jsonwebtoken");
 // GET PORT FROM ENV OR DEFAULT PORT
 const PORT = process.env.PORT || "2021";
 const { SECRET } = process.env;
+const auth = require("../auth/index");
 const Vinyl = require("../models/Vinyl");
 const User = require("../models/User");
 
@@ -74,8 +75,9 @@ router.get("/vinyl/seed", (req, res) => {
 });
 
 // test route
-router.get("/", (req, res) => {
-  res.send("hello world");
+router.get("/", auth, (req, res) => {
+  // res.send("hello world");
+  res.json(req.payload);
 });
 
 // Mongo Index Page - All Vinyl
@@ -119,8 +121,7 @@ router.put("/vinyl/:id", async (req, res) => {
 ////////////////////////////////
 // User Auth Routes
 ///////////////////////////////
-
-router.post("/signup", async (req, res) => {
+router.post("/signup", auth, async (req, res) => {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 10);
     const newUser = await User.create(req.body);
@@ -130,7 +131,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", auth, async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });

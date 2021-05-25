@@ -9,10 +9,14 @@ const methodOverride = require("method-override");
 const morgan = require("morgan");
 const cors = require("cors");
 const axios = require("axios");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 // GET PORT FROM ENV OR DEFAULT PORT
 const PORT = process.env.PORT || "2021";
-// const SECRET = process.env.SECRET || "secret";
+const { SECRET } = process.env;
+const auth = require("../auth/index");
 const Vinyl = require("../models/Vinyl");
+const User = require("../models/User");
 
 //////////////////////
 // SEED DATA
@@ -71,8 +75,9 @@ router.get("/vinyl/seed", (req, res) => {
 });
 
 // test route
-router.get("/", (req, res) => {
-  res.send("hello world");
+router.get("/", auth, (req, res) => {
+  // res.send("hello world");
+  res.json(req.payload);
 });
 
 // Mongo Index Page - All Vinyl
@@ -81,16 +86,6 @@ router.get("/vinyl", (req, res) => {
     res.json(allVinyl);
   });
 });
-
-// MusicBrainz Index Page
-// router.get("/index", async (req, res) => {
-//   const response = await axios(
-//     "https://musicbrainz.org/ws/2/release/f86c0b17-f117-45e0-94b2-5dd4664e271e?inc=artist-credits+labels+discids+recordings&fmt=json"
-//   );
-//   const albums = response.data;
-//   console.log(response.data.media[0].tracks);
-//   res.json(albums);
-// });
 
 // Create New Vinyl
 router.post("/vinyl", async (req, res) => {
@@ -123,5 +118,40 @@ router.put("/vinyl/:id", async (req, res) => {
   }
 });
 
-// Export Router \\
+////////////////////////////////
+// User Auth Routes
+///////////////////////////////
+router.post("/signup", async (req, res) => {
+  try {
+    req.body.password = await bcrypt.hash(req.body.password, 10);
+    const newUser = await User.create(req.body);
+    res.json(newUser);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (user) {
+      const match = await bcrypt.compare(password, user.password);
+      if (match) {
+        const token = await jwt.sign({ username }, SECRET);
+        res.status(200).json({ token });
+      } else {
+        res.status(400).json({ error: "PASSWORD DOES NOT MATCH" });
+      }
+    } else {
+      res.status(400).json({ error: "USER DOES NOT EXIST" });
+    }
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
+
+/////////////////////////
+// Export Router
+///////////////////////
 module.exports = router;
